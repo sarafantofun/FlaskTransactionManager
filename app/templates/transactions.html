@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Транзакции</h1>
+
+    <!-- Список транзакций -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Сумма</th>
+                <th>Комиссия</th>
+                <th>Статус</th>
+                <th>Дата создания</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.amount }}</td>
+                <td>{{ transaction.commission }}</td>
+                <td>{{ transaction.status }}</td>
+                <td>{{ transaction.created_at }}</td>
+                <td>
+                    <a href="{{ url_for('views.transactions', edit_transaction_id=transaction.id) }}">Редактировать</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Форма редактирования -->
+    {% if edit_transaction_id %}
+    <h2>{{ form_title }}</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.amount.label }} {{ form.amount }}
+        </div>
+        <div>
+            {{ form.commission.label }} {{ form.commission }}
+        </div>
+        <div>
+            {{ form.status.label }} {{ form.status }}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

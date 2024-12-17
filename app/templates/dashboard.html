@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Дашборд</h1>
+    <div>
+        <p>Количество пользователей: {{ users_count }}</p>
+        <p>Количество транзакций: {{ transactions_count }}</p>
+        <p>Сумма транзакций за текущий день: {{ daily_transactions_sum }}</p>
+    </div>
+    <h2>Последние транзакции</h2>
+    <ul>
+        {% for transaction in latest_transactions %}
+        <li>{{ transaction.id }}: {{ transaction.amount }} ({{ transaction.status }})</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

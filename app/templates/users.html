@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Пользователи</h1>
+
+    <!-- Форма создания/редактирования -->
+    <h2>{{ form_title }}</h2>
+    <form method="post" action="{{ form_action }}">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.balance.label }} {{ form.balance }}
+        </div>
+        <div>
+            {{ form.commission_rate.label }} {{ form.commission_rate }}
+        </div>
+        <div>
+            {{ form.webhook_url.label }} {{ form.webhook_url }}
+        </div>
+        <div>
+            {{ form.role.label }} {{ form.role }}
+        </div>
+        <div>
+            {{ form.submit }}
+        </div>
+    </form>
+
+    <!-- Список пользователей -->
+    <h2>Список пользователей</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Баланс</th>
+                <th>Ставка комиссии</th>
+                <th>Webhook URL</th>
+                <th>Роль</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.balance }}</td>
+                <td>{{ user.commission_rate }}</td>
+                <td>{{ user.webhook_url }}</td>
+                <td>{{ user.role }}</td>
+                <td>
+                    <!-- Кнопка редактирования -->
+                    <a href="{{ url_for('views.users', edit_user_id=user.id) }}">Редактировать</a>
+                    <!-- Форма для удаления -->
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="delete_user_id" value="{{ user.id }}">
+                        <button type="submit" onclick="return confirm('Удалить пользователя?')">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
