@@ -31,12 +31,11 @@ For full details on administrative functionalities, refer to the Admin Panel sec
 
 ## Setup Instructions
 
-1. Redis Configuration
-This project requires Redis to function properly. Follow the appropriate section below based on your current Redis setup:
+1. Redis Configuration. This project requires Redis to function properly. Follow the appropriate section below based on your current Redis setup:
   - If Redis is already installed:
      - Ensure that Redis is running and accessible on port 6379. This is the default port for Redis, and it should be open for connections.
   - If Redis is not installed:
-    - Ensure Docker Desktop is installed on your system. If not, [download Docker Desktop from the official Docker website] (https://docs.docker.com/desktop/).
+    - Ensure Docker Desktop is installed on your system. If not, [download Docker Desktop from the official Docker website](https://docs.docker.com/desktop/).
     - Open your terminal and execute the following command to start Redis using Docker:
     ```bash
     docker run --name my-redis -p 6379:6379 -d redis
