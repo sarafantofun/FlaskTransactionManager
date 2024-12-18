@@ -52,25 +52,29 @@ cd FlaskTransactionManager
 ```bash
 poetry install
 ```
+4. Activate the Virtual Environment After installing dependencies, activate the virtual environment created by Poetry:
+```bash
+poetry shell
+```
 
-4. Initialize the Database
+5. Initialize the Database
 ```bash
 flask db init
-flask db migrate
+flask db migrate -m "Initial migration"
 flask db upgrade
 ```
 
-5. Create an Admin User
+6. Create an Admin User
 ```bash
 flask create-admin
 ```
 
-6. Run the Server
+7. Run the Server
 ```bash
 flask run
 ```
 
-7. Start Celery Worker in a separate terminal window
+8. Start Celery Worker in a separate terminal window
 ```bash
 celery -A tasks worker --loglevel=info
 ```
