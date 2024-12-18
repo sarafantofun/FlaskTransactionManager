@@ -4,115 +4,126 @@ A simple and elegant web application built with Flask, Flask-WTF, and Flask-SQLA
 
 ---
 
+## Technologies Used
+
+This project utilizes the following technologies:
+- **Flask** for the web framework.
+- **SQLAlchemy** for database interactions.
+- **Celery** for handling asynchronous background tasks that support various operations within the application.
+
 ## Features
 
-- Dashboard
-  - View statistics like:
-    - Total users
-    - Total transactions
-    - Total transaction amounts for the day
-  - See the latest transactions.
+This application provides a powerful admin panel for comprehensive management of users and transactions, along with detailed statistical insights. Additionally, it offers:
+ 
+- **API**:
+  - /swagger: Access to API documentation.
+  - /create_transaction: Endpoint to create a transaction, includes automatic commission calculation.
+  - /cancel_transaction: Endpoint to cancel an existing transaction.
+  - /check_transaction: Endpoint to check the status of a transaction.  
   
-- Users Management
-  - Add, edit, and delete users.
-  - Assign roles: Admin or User.
-  
-- Transactions Management
-  - List, view, and update transaction statuses.
-  - Change transaction status (e.g., Confirmed, Canceled).
-  
-- API
-  - /create_transaction - Create a transaction (with automatic commission calculation).
-  - /cancel_transaction - Cancel a transaction.
-  - /check_transaction - Get transaction status.
-  - /swagger - documentation.
-  
-- Background Tasks
-  - Expire transactions after 15 minutes using Celery.
-  - Send webhooks on transaction expiration.
+- **Background Tasks**:
+  - Expire transactions after 15 minutes using Celery: Automatically changes the status of transactions to 'Expired' if not confirmed within 15 minutes.
+  - Send webhooks on transaction expiration: Notifies external systems or components when a transaction status changes to 'Expired'.
+
+For full details on administrative functionalities, refer to the Admin Panel section.
 
 ---
 
 ## Setup Instructions
 
-### 1. Clone the Repository
+1. Redis Configuration
+This project requires Redis to function properly. Follow the appropriate section below based on your current Redis setup:
+  - If Redis is already installed:
+     - Ensure that Redis is running and accessible on port 6379. This is the default port for Redis, and it should be open for connections.
+  - If Redis is not installed:
+    - Ensure Docker Desktop is installed on your system. If not, [download Docker Desktop from the official Docker website] (https://docs.docker.com/desktop/).
+    - Open your terminal and execute the following command to start Redis using Docker:
+    ```bash
+    docker run --name my-redis -p 6379:6379 -d redis
+    ```
+    This command will start Redis in a Docker container, making it accessible on port 6379 of your local machine. Make sure this port is not being used by any other applications before running this command.
+
+2. Clone the Repository
 ```bash
 git clone https://github.com/sarafantofun/FlaskTransactionManager.git
 cd FlaskTransactionManager
 ```
 
-### 2. Install dependencies using Poetry:
+3. Install dependencies using Poetry:
 ```bash
 poetry install
 ```
 
-### 3. Initialize the Database
+4. Initialize the Database
 ```bash
 flask db init
 flask db migrate
 flask db upgrade
 ```
-### 4. Create an Admin User
+
+5. Create an Admin User
 ```bash
 flask create-admin
 ```
-### 5. Run the Server
+
+6. Run the Server
 ```bash
 flask run
 ```
-### 6. Start Celery Worker в новом терминале!
+
+7. Start Celery Worker in a separate terminal window
 ```bash
 celery -A tasks worker --loglevel=info
 ```
 
 ## API Endpoints
 
-1. Create Transaction
-POST /create_transaction
+- **Create Transaction**
+  **POST** `/create_transaction`
+  - Creates a new transaction with the given details.
+  **Body:**
+    ```json
+    {
+    "user_id": 1, 
+    "amount": 100.0
+    }
+    ```
+  - Response: JSON with the created transaction details.
 
-{
-  "user_id": 1,
-  "amount": 100.0
-}
-2. Cancel Transaction
-POST /cancel_transaction
 
-{
-  "transaction_id": 1
-}
-3. Check Transaction Status
-GET /check_transaction?transaction_id=1
+- **Cancel Transaction**
+  **POST** `/cancel_transaction`
+  - Cancels a transaction by its ID.
+  **Body:**
+    ```json
+    {
+      "transaction_id": 5
+    }
+    ```
+
+
+- **Check Transaction Status**
+  **GET** `/check_transaction?transaction_id=1`
+  - Checks the status of a transaction using its ID.
 
 ## Admin Panel
 
-The admin panel includes:
+The admin panel is accessible via the `/admin` route and includes the following features:
 
-Dashboard: View statistics and recent transactions.
-Users: Manage users (add, edit, delete).
-Transactions: Manage transactions (filter, change status).
-Background Tasks
-
-Expire Transactions: Transactions with the status "waiting" expire after 15 minutes.
-Status changes to "expired."
-A webhook is sent to the user's URL.
-Optional Task: Periodically check USDT wallet balances (for advanced users).
-Additional Features
-
-Auto-refresh in admin panel (configurable: 0, 10, 15, 30 seconds, or 1 minute).
-Filter transactions by:
-User
-Status (waiting, confirmed, canceled, expired).
-Role-based access:
-Admin: Full access.
-User: View only their own transactions.
-Screenshots
-
-## Dashboard
-<img src="screenshots/dashboard.png" alt="Dashboard" width="100%">
-Users Management
-<img src="screenshots/users.png" alt="Users" width="100%">
-Transactions Management
-<img src="screenshots/transactions.png" alt="Transactions" width="100%">
+- **Dashboard**:
+  - View statistics like:
+    - Total users: Displays the number of registered users.
+    - Total transactions: Shows the number of transactions processed.
+    - Total transaction amounts for the day: Summarizes the total amount of transactions made within the current day.
+  - See the latest transactions: Displays the most recent transactions processed by the system.
+  
+- **Users Management**:
+  - Add, edit, and delete user profiles.
+  - Assign roles: Admin or User, determining access levels within the application.
+  
+- **Transactions Management**:
+  - List, view, and manually update transaction statuses.
+  - Change transaction status (e.g., Confirmed, Canceled): Allows administrators to update the status as needed.
 
 ## License
 
