@@ -50,6 +50,7 @@ cd FlaskTransactionManager
 
 3. Install dependencies using Poetry:
 ```bash
+python -m pip install --upgrade poetry
 poetry install
 ```
 
@@ -60,7 +61,6 @@ poetry shell
 
 5. Initialize the Database
 ```bash
-flask db init
 flask db migrate -m "Initial migration"
 flask db upgrade
 ```
