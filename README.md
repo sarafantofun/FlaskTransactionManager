@@ -31,7 +31,13 @@ For full details on administrative functionalities, refer to the Admin Panel sec
 
 ## Setup Instructions
 
-1. **Redis Configuration.** This project requires Redis to function properly. Follow the appropriate section below based on your current Redis setup:
+1. Clone the Repository
+```bash
+git clone https://github.com/sarafantofun/FlaskTransactionManager.git
+cd FlaskTransactionManager
+```
+
+2. **Redis Configuration.** This project requires Redis to function properly. Follow the appropriate section below based on your current Redis setup:
   - If Redis is already installed:
      - Ensure that Redis is running and accessible on port 6379. This is the default port for Redis, and it should be open for connections.
   - If Redis is not installed:
@@ -42,16 +48,11 @@ For full details on administrative functionalities, refer to the Admin Panel sec
     ```
     This command will start Redis in a Docker container, making it accessible on port 6379 of your local machine. Make sure this port is not being used by any other applications before running this command.
 
-2. Clone the Repository
-```bash
-git clone https://github.com/sarafantofun/FlaskTransactionManager.git
-cd FlaskTransactionManager
-```
-
 3. Install dependencies using Poetry:
 ```bash
 poetry install
 ```
+
 4. Activate the Virtual Environment After installing dependencies, activate the virtual environment created by Poetry:
 ```bash
 poetry shell
@@ -78,13 +79,16 @@ flask run
 
   - Windows: The solo pool is used to avoid compatibility issues with the default prefork pool.
   - Linux/macOS: The prefork pool is used for multiprocessing, offering better performance in production environments.
+  
   The pool type is determined in the code, so the same command can be used to start the Celery worker on any platform.
+  
   Running the Worker **in a separate terminal window**:
   ```bash
   celery -A app.tasks worker --loglevel=info
   ```
 
 9. **Running Celery-Beat.** Celery-Beat is used to schedule periodic tasks. In this project, the task expire_transactions is configured to run every minute. This task checks for transactions with the status "Waiting" and updates their status to "Expired" if more than 15 minutes have passed since their creation.
+  
   To start Celery-Beat **open a separate terminal window and run**:
   ```bash
   celery -A app.tasks beat --loglevel=info
