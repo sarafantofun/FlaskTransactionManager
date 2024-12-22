@@ -3,8 +3,6 @@
 {% block content %}
 <div>
     <h1>Транзакции</h1>
-
-    <!-- Список транзакций -->
     <table>
         <thead>
             <tr>
@@ -31,8 +29,6 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <!-- Форма редактирования -->
     {% if edit_transaction_id %}
     <h2>{{ form_title }}</h2>
     <form method="post">
