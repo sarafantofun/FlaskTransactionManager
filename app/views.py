@@ -79,11 +79,18 @@ def transactions():
     form_title = f"Редактировать транзакцию #{transaction.id}" if transaction else "Выберите транзакцию для редактирования"
     if form.validate_on_submit():
         if transaction:
-            transaction.amount = form.amount.data
-            transaction.commission = form.commission.data
-            transaction.status = form.status.data
-            db.session.commit()
-            flash(f'Транзакция #{transaction.id} успешно обновлена!', 'success')
+            if transaction.status == 'waiting':
+                new_status = form.status.data
+                if new_status in ['confirmed', 'canceled']:
+                    transaction.status = new_status
+                    transaction.amount = form.amount.data
+                    transaction.commission = form.commission.data
+                    db.session.commit()
+                    flash(f'Транзакция #{transaction.id} успешно обновлена!', 'success')
+                else:
+                    flash('Статус можно изменить только на "Подтверждена" или "Отменена".', 'danger')
+            else:
+                flash('Статус можно менять только для транзакций со статусом "Ожидание".', 'danger')
             return redirect(url_for('views.transactions'))
     all_transactions = Transaction.query.all()
     return render_template(
