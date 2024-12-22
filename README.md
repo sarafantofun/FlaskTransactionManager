@@ -78,16 +78,16 @@ flask run
 8. **Celery Worker Configuration.** This project uses Celery to handle background tasks. The worker pool is automatically configured based on the operating system:
 
   - Windows: The solo pool is used to avoid compatibility issues with the default prefork pool.
-  - Linux/macOS: The prefork pool is used for multiprocessing, offering better performance in production environments.
+  - Linux/macOS: The prefork pool is used for multiprocessing, offering better performance in production environments.  
   
-  The pool type is determined in the code, so the same command can be used to start the Celery worker on any platform.
+  The pool type is determined in the code, so the same command can be used to start the Celery worker on any platform.  
   
   Running the Worker **in a separate terminal window**:
   ```bash
   celery -A app.tasks worker --loglevel=info
   ```
 
-9. **Running Celery-Beat.** Celery-Beat is used to schedule periodic tasks. In this project, the task expire_transactions is configured to run every minute. This task checks for transactions with the status "Waiting" and updates their status to "Expired" if more than 15 minutes have passed since their creation.
+9. **Running Celery-Beat.** Celery-Beat is used to schedule periodic tasks. In this project, the task expire_transactions is configured to run every minute. This task checks for transactions with the status "Waiting" and updates their status to "Expired" if more than 15 minutes have passed since their creation.  
   
   To start Celery-Beat **open a separate terminal window and run**:
   ```bash
