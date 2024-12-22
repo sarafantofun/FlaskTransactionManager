@@ -12,6 +12,15 @@
         <a href="{{ url_for('views.users') }}">Пользователи</a> |
         <a href="{{ url_for('views.transactions') }}">Транзакции</a>
     </nav>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     <div class="content">
         {% block content %}{% endblock %}
     </div>
